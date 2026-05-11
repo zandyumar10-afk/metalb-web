@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   Scissors,
   CircleDot,
@@ -15,6 +16,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { products, type Product } from "@/lib/data";
 import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/components/i18n-provider";
 
 const productIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   cutting: Scissors,
@@ -33,13 +35,18 @@ const accentClass: Record<Product["accent"], string> = {
 };
 
 const accentRing: Record<Product["accent"], string> = {
-  steel: "group-hover:border-steel-300/40 group-hover:shadow-[0_0_0_4px_rgba(125,162,210,0.06)]",
-  cyan: "group-hover:border-cyan-glow/40 group-hover:shadow-[0_0_0_4px_rgba(94,234,212,0.07)]",
-  amber: "group-hover:border-amber-glow/40 group-hover:shadow-[0_0_0_4px_rgba(251,191,36,0.06)]",
-  rust: "group-hover:border-rust/40 group-hover:shadow-[0_0_0_4px_rgba(194,65,12,0.06)]",
+  steel:
+    "group-hover:border-steel-300/40 group-hover:shadow-[0_0_0_4px_color-mix(in_oklab,var(--steel-300)_8%,transparent)]",
+  cyan:
+    "group-hover:border-cyan-glow/40 group-hover:shadow-[0_0_0_4px_color-mix(in_oklab,var(--cyan-glow)_8%,transparent)]",
+  amber:
+    "group-hover:border-amber-glow/40 group-hover:shadow-[0_0_0_4px_color-mix(in_oklab,var(--amber-glow)_8%,transparent)]",
+  rust:
+    "group-hover:border-rust/40 group-hover:shadow-[0_0_0_4px_color-mix(in_oklab,var(--rust)_8%,transparent)]",
 };
 
 export function ProductsSection() {
+  const { t, lang } = useI18n();
   const [active, setActive] = useState<string>(products[0].id);
   const current = products.find((p) => p.id === active) ?? products[0];
 
@@ -47,17 +54,17 @@ export function ProductsSection() {
     <section id="products" className="relative scroll-mt-24 py-24 md:py-32">
       <div className="container-x">
         <SectionHeader
-          eyebrow="02 — Catalogue"
+          eyebrow={t.products.eyebrow}
           title={
             <>
-              Six instruments,{" "}
+              {t.products.titleA}{" "}
               <span className="font-display italic text-cyan-glow">
-                one continuous truth
+                {t.products.titleAccent}
               </span>{" "}
-              from billet to image.
+              {t.products.titleB}
             </>
           }
-          description="Each machine is a chapter in the metallographic pipeline. Pair them, or run them alone — calibration travels with the specimen."
+          description={t.products.description}
         />
 
         <div className="mt-14 grid grid-cols-12 gap-4 lg:gap-6">
@@ -66,11 +73,8 @@ export function ProductsSection() {
               const Icon = productIcons[p.id] ?? CircleDot;
               const isActive = p.id === active;
               return (
-                <motion.button
+                <motion.div
                   key={p.id}
-                  type="button"
-                  onClick={() => setActive(p.id)}
-                  onMouseEnter={() => setActive(p.id)}
                   initial={{ opacity: 0, y: 18 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.25 }}
@@ -79,12 +83,20 @@ export function ProductsSection() {
                     ease: [0.16, 1, 0.3, 1],
                     delay: i * 0.06,
                   }}
+                  onMouseEnter={() => setActive(p.id)}
+                  onFocus={() => setActive(p.id)}
+                  onClick={() => setActive(p.id)}
                   className={cn(
                     "group relative flex h-full flex-col items-start gap-4 overflow-hidden rounded-2xl border border-line bg-surface/30 p-5 text-left transition-all",
                     accentRing[p.accent],
                     isActive && "border-line/80 bg-surface/60",
                   )}
                 >
+                  <Link
+                    href={`/products/${p.id}`}
+                    className="absolute inset-0 z-10"
+                    aria-label={`${p.name} — ${p.category[lang]}`}
+                  />
                   <div className="flex w-full items-center justify-between">
                     <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
                       {p.index}
@@ -107,14 +119,14 @@ export function ProductsSection() {
                   </div>
                   <div className="space-y-1">
                     <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
-                      {p.category}
+                      {p.category[lang]}
                     </div>
                     <div className="font-display text-2xl text-ink">
                       {p.name}
                     </div>
                   </div>
                   <p className="line-clamp-2 text-sm text-ink-2/90">
-                    {p.tagline}
+                    {p.tagline[lang]}
                   </p>
                   <span
                     className={cn(
@@ -126,7 +138,7 @@ export function ProductsSection() {
                       isActive && "scale-x-100",
                     )}
                   />
-                </motion.button>
+                </motion.div>
               );
             })}
           </div>
@@ -141,10 +153,10 @@ export function ProductsSection() {
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 className="relative h-full overflow-hidden rounded-2xl border border-line bg-bg-raised/80 p-7 md:p-8"
               >
-                <div className="pointer-events-none absolute -right-32 -top-32 h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgba(94,234,212,0.18),transparent)]" />
+                <div className="pointer-events-none absolute -right-32 -top-32 h-72 w-72 rounded-full tint-blob-cyan" />
                 <div className="relative flex items-center justify-between">
                   <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
-                    Catalogue · {current.index}
+                    {t.products.catalogue} · {current.index}
                   </span>
                   <span
                     className={cn(
@@ -152,24 +164,24 @@ export function ProductsSection() {
                       accentClass[current.accent],
                     )}
                   >
-                    {current.category}
+                    {current.category[lang]}
                   </span>
                 </div>
                 <h3 className="mt-6 text-pretty font-display text-4xl text-ink md:text-5xl">
                   {current.name}
                 </h3>
                 <p className="mt-3 text-pretty text-base text-ink-2">
-                  {current.description}
+                  {current.description[lang]}
                 </p>
 
                 <div className="mt-7 grid grid-cols-2 gap-x-4 gap-y-3">
                   {current.specs.map((spec) => (
                     <div
-                      key={spec.label}
+                      key={spec.label.en}
                       className="border-t border-line/60 pt-3"
                     >
                       <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-3">
-                        {spec.label}
+                        {spec.label[lang]}
                       </div>
                       <div className="mt-0.5 text-sm text-ink">
                         {spec.value}
@@ -181,24 +193,33 @@ export function ProductsSection() {
                 <ul className="mt-7 space-y-2">
                   {current.highlights.map((h) => (
                     <li
-                      key={h}
+                      key={h.en}
                       className="flex items-center gap-2 text-sm text-ink-2"
                     >
                       <Check
                         className={cn("h-3.5 w-3.5", accentClass[current.accent])}
                       />
-                      {h}
+                      {h[lang]}
                     </li>
                   ))}
                 </ul>
 
-                <a
-                  href="#cta"
-                  className="mt-8 inline-flex items-center gap-1.5 rounded-full border border-line bg-surface/60 px-4 py-2 text-sm text-ink transition-all hover:border-cyan-glow/40 hover:bg-surface"
-                >
-                  Request datasheet
-                  <ArrowUpRight className="h-4 w-4" />
-                </a>
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <Link
+                    href={`/products/${current.id}`}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-sm font-medium text-bg transition-shadow hover:shadow-[0_18px_60px_-12px_color-mix(in_oklab,var(--ink)_35%,transparent)]"
+                  >
+                    {t.products.viewDetail}
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                  <a
+                    href="#cta"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface/60 px-4 py-2 text-sm text-ink transition-all hover:border-cyan-glow/40 hover:bg-surface"
+                  >
+                    {t.products.requestDatasheet}
+                    <ArrowUpRight className="h-4 w-4" />
+                  </a>
+                </div>
               </motion.div>
             </AnimatePresence>
           </Reveal>

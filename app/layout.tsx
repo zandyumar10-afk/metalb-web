@@ -6,6 +6,8 @@ import { LenisProvider } from "@/components/lenis-provider";
 import { NavBar } from "@/components/nav-bar";
 import { CursorGlow } from "@/components/ui/cursor-glow";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { ThemeProvider, themeInitScript } from "@/components/theme-provider";
+import { I18nProvider } from "@/components/i18n-provider";
 
 const geistSans = Geist({
   variable: "--font-sans-geist",
@@ -28,7 +30,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://metalscope.example.com"),
+  metadataBase: new URL("https://metalab.example.com"),
   title: {
     default: "METALAB — Precision Metallography Instruments",
     template: "%s · METALAB",
@@ -58,16 +60,28 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="id"
+      data-theme="light"
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          // Apply persisted theme before React mounts to avoid a flash.
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
+      </head>
       <body className="min-h-svh bg-bg text-ink overflow-x-clip">
-        <LenisProvider>
-          <ScrollProgress />
-          <CursorGlow />
-          <NavBar />
-          <main>{children}</main>
-        </LenisProvider>
+        <ThemeProvider>
+          <I18nProvider>
+            <LenisProvider>
+              <ScrollProgress />
+              <CursorGlow />
+              <NavBar />
+              <main>{children}</main>
+            </LenisProvider>
+          </I18nProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -5,66 +5,70 @@ import { useInView } from "motion/react";
 import { stats } from "@/lib/data";
 import { SectionHeader } from "@/components/sections/products";
 import { Reveal } from "@/components/ui/reveal";
+import { useT } from "@/components/i18n-provider";
 
 export function SpecsSection() {
+  const t = useT();
   return (
     <section id="specs" className="relative scroll-mt-24 py-24 md:py-32">
       <div className="container-x">
         <SectionHeader
-          eyebrow="04 — Engineering"
+          eyebrow={t.specs.eyebrow}
           title={
             <>
-              Every micron has a{" "}
+              {t.specs.titleA}{" "}
               <span className="font-display italic text-amber-glow">
-                certificate
+                {t.specs.titleAccent}
               </span>{" "}
-              behind it.
+              {t.specs.titleB}
             </>
           }
-          description="We measure the things our clients measure. Calibration data ships with every machine — no black boxes, no marketing numbers."
+          description={t.specs.description}
         />
 
         <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-          {stats.map((s, i) => (
-            <Reveal
-              key={s.label}
-              delay={i * 0.06}
-              className="group relative overflow-hidden rounded-2xl border border-line bg-surface/30 p-5 md:p-6"
-            >
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-                style={{
-                  background:
-                    "radial-gradient(280px circle at var(--mx,50%) var(--my,50%), rgba(94,234,212,0.10), transparent 60%)",
-                }}
-              />
-              <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
-                {s.label}
-              </div>
-              <div className="mt-5 flex items-baseline gap-1.5">
-                <Counter
-                  to={s.value}
-                  className="font-display text-5xl text-ink md:text-6xl"
+          {stats.map((s, i) => {
+            const meta = t.specs.stats[s.key];
+            const unit =
+              s.unit === "specimens / day" ? t.specs.unitSpecimensDay : s.unit;
+            return (
+              <Reveal
+                key={s.key}
+                delay={i * 0.06}
+                className="group relative overflow-hidden rounded-2xl border border-line bg-surface/30 p-5 md:p-6"
+              >
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+                  style={{
+                    background:
+                      "radial-gradient(280px circle at var(--mx,50%) var(--my,50%), color-mix(in oklab, var(--cyan-glow) 18%, transparent), transparent 60%)",
+                  }}
                 />
-                {s.unit && (
-                  <span className="text-sm text-ink-3">{s.unit}</span>
-                )}
-              </div>
-              <p className="mt-4 text-sm text-ink-2/90">{s.hint}</p>
-              <span className="absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-line to-transparent" />
-            </Reveal>
-          ))}
+                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
+                  {meta.label}
+                </div>
+                <div className="mt-5 flex items-baseline gap-1.5">
+                  <Counter
+                    to={s.value}
+                    className="font-display text-5xl text-ink md:text-6xl"
+                  />
+                  {unit && <span className="text-sm text-ink-3">{unit}</span>}
+                </div>
+                <p className="mt-4 text-sm text-ink-2/90">{meta.hint}</p>
+                <span className="absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-line to-transparent" />
+              </Reveal>
+            );
+          })}
         </div>
 
         <div className="mt-12 grid grid-cols-12 gap-4 md:gap-6">
           <Reveal className="col-span-12 overflow-hidden rounded-2xl border border-line bg-bg-raised/70 p-7 md:col-span-7 md:p-10">
             <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
-              Certifications · Standards
+              {t.specs.certHeader}
             </div>
             <h3 className="mt-3 text-pretty text-3xl text-ink md:text-4xl">
-              Built against the strictest measurement frameworks in the
-              industry.
+              {t.specs.certTitle}
             </h3>
             <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-ink-2">
               {[
@@ -90,14 +94,13 @@ export function SpecsSection() {
             className="relative col-span-12 overflow-hidden rounded-2xl border border-line bg-bg-raised/70 p-7 md:col-span-5 md:p-10"
           >
             <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
-              Operating envelope
+              {t.specs.envelopeHeader}
             </div>
             <h3 className="mt-3 text-pretty font-display text-3xl text-ink">
-              From microalloys to medical grade.
+              {t.specs.envelopeTitle}
             </h3>
             <p className="mt-3 max-w-md text-sm text-ink-2">
-              Carbon · stainless · tool steels · superalloys · titanium · aluminum
-              · copper · magnesium · cast iron · composites.
+              {t.specs.envelopeBody}
             </p>
             <div className="mt-6 grid grid-cols-3 gap-2">
               {[

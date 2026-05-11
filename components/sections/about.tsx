@@ -2,41 +2,41 @@
 
 import { SectionHeader } from "@/components/sections/products";
 import { Reveal } from "@/components/ui/reveal";
+import { useT } from "@/components/i18n-provider";
 
 export function AboutSection() {
+  const t = useT();
   return (
     <section id="about" className="relative scroll-mt-24 py-24 md:py-32">
       <div className="container-x">
         <SectionHeader
-          eyebrow="05 — Studio"
+          eyebrow={t.about.eyebrow}
           title={
             <>
-              We come from{" "}
+              {t.about.titleA}{" "}
               <span className="font-display italic text-cyan-glow">
-                metallurgy
+                {t.about.titleAccent}
               </span>
-              , not marketing.
+              {t.about.titleB}
             </>
           }
-          description="A small studio of metallurgists, mechanical engineers and machinists. We sell the same instruments we use in our own QA laboratory."
+          description={t.about.description}
         />
 
         <div className="mt-14 grid grid-cols-12 gap-6">
           <Reveal className="col-span-12 lg:col-span-7">
             <div className="relative overflow-hidden rounded-3xl border border-line bg-bg-raised/80 p-7 md:p-10">
               <p className="text-pretty text-xl leading-[1.5] text-ink md:text-2xl">
-                Sample preparation is where the experiment is{" "}
+                {t.about.philosophyA}{" "}
                 <span className="font-display italic text-cyan-glow">
-                  won or lost
+                  {t.about.philosophyAccent}
                 </span>
-                . Our instruments treat the specimen as data — every cut, every
-                pressure ramp, every polishing minute is recorded against the
-                certificate that ships with the part.
+                {t.about.philosophyB}
               </p>
               <div className="mt-8 grid grid-cols-2 gap-6 border-t border-line/60 pt-6 md:grid-cols-3">
                 <div>
                   <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
-                    Founded
+                    {t.about.founded}
                   </div>
                   <div className="mt-1 font-display text-2xl text-ink">
                     2014
@@ -44,13 +44,13 @@ export function AboutSection() {
                 </div>
                 <div>
                   <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
-                    Engineers
+                    {t.about.engineers}
                   </div>
                   <div className="mt-1 font-display text-2xl text-ink">42</div>
                 </div>
                 <div>
                   <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
-                    Installs
+                    {t.about.installs}
                   </div>
                   <div className="mt-1 font-display text-2xl text-ink">
                     1,280+
@@ -60,31 +60,14 @@ export function AboutSection() {
             </div>
           </Reveal>
 
-          <Reveal
-            delay={0.1}
-            className="col-span-12 lg:col-span-5"
-          >
+          <Reveal delay={0.1} className="col-span-12 lg:col-span-5">
             <div className="grid h-full grid-cols-2 gap-4">
-              <Pillar
-                no="A"
-                title="Service-first."
-                body="On-site recommissioning and recipe migration when you move benches, sites, or operators."
-              />
-              <Pillar
-                no="B"
-                title="No black boxes."
-                body="Every setpoint, every coefficient is exposed and editable. Your metallurgists own the recipe."
-              />
-              <Pillar
-                no="C"
-                title="Calibrated for export."
-                body="Crates leave with the calibration file. Plug in, log in, and reproduce the same image on the other side of the world."
-              />
-              <Pillar
-                no="D"
-                title="Quiet by design."
-                body="Sub-65 dB cycles. The lab stays the lab — even when six instruments run in parallel."
-              />
+              {(["A", "B", "C", "D"] as const).map((no) => {
+                const p = t.about.pillars[no];
+                return (
+                  <Pillar key={no} no={no} title={p.title} body={p.body} />
+                );
+              })}
             </div>
           </Reveal>
         </div>

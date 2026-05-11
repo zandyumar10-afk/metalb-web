@@ -1,48 +1,141 @@
 @import "tailwindcss";
 
+/* ───────────────────────────────────────────────────────────────────────────
+   THEME TOKENS — light (default) and dark
+   Tailwind v4 @theme picks these up via var() so all utility classes
+   (bg-bg, text-ink, border-line, …) swap automatically when [data-theme]
+   changes on <html>.
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* Light theme — warm off-white architectural paper */
+  --bg: #f6f4ec;
+  --bg-soft: #efebe0;
+  --bg-raised: #ffffff;
+  --surface: #f1ede2;
+  --surface-2: #e7e2d3;
+  --line: #d6d0bf;
+  --line-soft: #e6e1d2;
+
+  --ink: #0d121a;
+  --ink-2: #2f3540;
+  --ink-3: #5a6373;
+  --ink-4: #8a93a3;
+
+  --steel-50: #eef4fb;
+  --steel-100: #d3e1f1;
+  --steel-200: #a6c2e2;
+  --steel-300: #4d83c2;
+  --steel-400: #2f66a8;
+  --steel-500: #244e83;
+  --steel-600: #1c3c66;
+  --steel-700: #142b4a;
+  --steel-800: #0c1b2e;
+  --steel-900: #060f1a;
+
+  --cyan-glow: #0e7490;
+  --amber-glow: #b45309;
+  --rust: #9a3412;
+
+  --shadow-glow:
+    0 0 0 1px rgba(14, 116, 144, 0.18),
+    0 14px 60px -22px rgba(14, 116, 144, 0.35);
+  --shadow-steel:
+    0 0 0 1px rgba(47, 102, 168, 0.18),
+    0 18px 50px -22px rgba(47, 102, 168, 0.32);
+
+  --tint-blue: rgba(47, 102, 168, 0.08);
+  --tint-cyan: rgba(14, 116, 144, 0.05);
+  --tint-blob-blue: rgba(47, 102, 168, 0.18);
+  --tint-blob-cyan: rgba(14, 116, 144, 0.12);
+  --tint-glow-cyan-soft: rgba(14, 116, 144, 0.08);
+  --tint-grid: rgba(76, 91, 110, 0.18);
+}
+
+[data-theme="dark"] {
+  --bg: #07090d;
+  --bg-soft: #0b0f15;
+  --bg-raised: #11161f;
+  --surface: #161c27;
+  --surface-2: #1c2330;
+  --line: #232b39;
+  --line-soft: #1a212c;
+
+  --ink: #f4f6fb;
+  --ink-2: #c5cdd9;
+  --ink-3: #8b94a3;
+  --ink-4: #5b6473;
+
+  --steel-50: #eef4fb;
+  --steel-100: #d3e1f1;
+  --steel-200: #a6c2e2;
+  --steel-300: #79a2d2;
+  --steel-400: #4d83c2;
+  --steel-500: #2f66a8;
+  --steel-600: #244e83;
+  --steel-700: #1c3c66;
+  --steel-800: #142b4a;
+  --steel-900: #0c1b2e;
+
+  --cyan-glow: #5eead4;
+  --amber-glow: #fbbf24;
+  --rust: #c2410c;
+
+  --shadow-glow:
+    0 0 0 1px rgba(94, 234, 212, 0.18),
+    0 12px 80px -20px rgba(94, 234, 212, 0.45);
+  --shadow-steel:
+    0 0 0 1px rgba(125, 162, 210, 0.18),
+    0 24px 80px -32px rgba(125, 162, 210, 0.55);
+
+  --tint-blue: rgba(47, 102, 168, 0.18);
+  --tint-cyan: rgba(94, 234, 212, 0.06);
+  --tint-blob-blue: rgba(47, 102, 168, 0.45);
+  --tint-blob-cyan: rgba(94, 234, 212, 0.25);
+  --tint-glow-cyan-soft: rgba(94, 234, 212, 0.18);
+  --tint-grid: rgba(125, 162, 210, 0.25);
+}
+
 @theme inline {
-  --color-bg: #07090d;
-  --color-bg-soft: #0b0f15;
-  --color-bg-raised: #11161f;
-  --color-surface: #161c27;
-  --color-surface-2: #1c2330;
-  --color-line: #232b39;
-  --color-line-soft: #1a212c;
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
+  --color-bg-raised: var(--bg-raised);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
 
-  --color-ink: #f4f6fb;
-  --color-ink-2: #c5cdd9;
-  --color-ink-3: #8b94a3;
-  --color-ink-4: #5b6473;
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-4: var(--ink-4);
 
-  --color-steel-50: #eef4fb;
-  --color-steel-100: #d3e1f1;
-  --color-steel-200: #a6c2e2;
-  --color-steel-300: #79a2d2;
-  --color-steel-400: #4d83c2;
-  --color-steel-500: #2f66a8;
-  --color-steel-600: #244e83;
-  --color-steel-700: #1c3c66;
-  --color-steel-800: #142b4a;
-  --color-steel-900: #0c1b2e;
+  --color-steel-50: var(--steel-50);
+  --color-steel-100: var(--steel-100);
+  --color-steel-200: var(--steel-200);
+  --color-steel-300: var(--steel-300);
+  --color-steel-400: var(--steel-400);
+  --color-steel-500: var(--steel-500);
+  --color-steel-600: var(--steel-600);
+  --color-steel-700: var(--steel-700);
+  --color-steel-800: var(--steel-800);
+  --color-steel-900: var(--steel-900);
 
-  --color-cyan-glow: #5eead4;
-  --color-amber-glow: #fbbf24;
-  --color-rust: #c2410c;
+  --color-cyan-glow: var(--cyan-glow);
+  --color-amber-glow: var(--amber-glow);
+  --color-rust: var(--rust);
 
   --font-sans: var(--font-sans-geist);
   --font-mono: var(--font-mono-geist);
   --font-display: var(--font-display-instrument);
 
-  --shadow-glow: 0 0 0 1px rgba(94, 234, 212, 0.18),
-    0 12px 80px -20px rgba(94, 234, 212, 0.45);
-  --shadow-steel: 0 0 0 1px rgba(125, 162, 210, 0.18),
-    0 24px 80px -32px rgba(125, 162, 210, 0.55);
+  --shadow-glow: var(--shadow-glow);
+  --shadow-steel: var(--shadow-steel);
 }
 
 html,
 body {
-  background: var(--color-bg);
-  color: var(--color-ink);
+  background: var(--bg);
+  color: var(--ink);
 }
 
 html {
@@ -50,44 +143,44 @@ html {
   text-rendering: optimizeLegibility;
   font-feature-settings: "ss01", "cv11";
   scroll-behavior: auto;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   font-feature-settings: "ss01", "cv11";
   background:
-    radial-gradient(
-      1200px 600px at 15% -10%,
-      rgba(47, 102, 168, 0.18),
-      transparent 60%
-    ),
-    radial-gradient(
-      900px 500px at 110% 10%,
-      rgba(94, 234, 212, 0.06),
-      transparent 60%
-    ),
-    var(--color-bg);
+    radial-gradient(1200px 600px at 15% -10%, var(--tint-blue), transparent 60%),
+    radial-gradient(900px 500px at 110% 10%, var(--tint-cyan), transparent 60%),
+    var(--bg);
+  transition:
+    background-color 350ms ease,
+    color 350ms ease;
 }
 
 ::selection {
-  background: rgba(94, 234, 212, 0.3);
-  color: var(--color-ink);
+  background: color-mix(in oklab, var(--cyan-glow) 28%, transparent);
+  color: var(--ink);
 }
 
-/* Custom scrollbar (only when not using Lenis-controlled scroll) */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-bg);
+  background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-line);
+  background: var(--line);
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-steel-700);
+  background: var(--steel-300);
 }
 
 /* Lenis smooth-scroll baseline */
@@ -108,7 +201,7 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* Utility classes */
+/* Utilities */
 @utility container-x {
   @apply mx-auto w-full max-w-[1280px] px-6 md:px-10;
 }
@@ -125,7 +218,7 @@ html.lenis body {
   background-image: linear-gradient(
     to right,
     transparent,
-    rgba(125, 162, 210, 0.45),
+    var(--line),
     transparent
   );
   height: 1px;
@@ -135,9 +228,22 @@ html.lenis body {
   background: linear-gradient(
     115deg,
     transparent 30%,
-    rgba(255, 255, 255, 0.08) 50%,
+    color-mix(in oklab, var(--ink) 8%, transparent) 50%,
     transparent 70%
   );
+}
+
+/* Theme-aware decorative tints exposed as background props */
+@utility tint-blob-blue {
+  background: radial-gradient(closest-side, var(--tint-blob-blue), transparent 70%);
+}
+
+@utility tint-blob-cyan {
+  background: radial-gradient(closest-side, var(--tint-blob-cyan), transparent 70%);
+}
+
+@utility tint-blob-cyan-soft {
+  background: radial-gradient(closest-side, var(--tint-glow-cyan-soft), transparent);
 }
 
 @keyframes marquee-x {
@@ -192,13 +298,12 @@ html.lenis body {
   animation: grain-shift 8s steps(6) infinite;
 }
 
-/* Section dividers with measurement tick marks */
 .tick-divider {
   position: relative;
   height: 22px;
   background-image:
-    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
-    linear-gradient(to right, var(--color-line-soft) 1px, transparent 1px);
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to right, var(--line-soft) 1px, transparent 1px);
   background-size:
     80px 100%,
     16px 100%;
@@ -215,7 +320,6 @@ html.lenis body {
   );
 }
 
-/* Type defaults */
 h1,
 h2,
 h3,
@@ -233,16 +337,13 @@ h4 {
   font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-/* Crosshair / target ornament */
 .crosshair {
   background-image:
     linear-gradient(currentColor, currentColor),
     linear-gradient(currentColor, currentColor);
   background-size:
-    1px 100%,
-    100% 1px;
-  background-position:
-    center top,
-    left center;
+    1px 12px,
+    12px 1px;
+  background-position: center;
   background-repeat: no-repeat;
 }

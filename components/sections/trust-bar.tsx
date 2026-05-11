@@ -3,8 +3,10 @@
 import { Marquee } from "@/components/ui/marquee";
 import { trustedBy } from "@/lib/data";
 import { Reveal } from "@/components/ui/reveal";
+import { useT } from "@/components/i18n-provider";
 
 export function TrustBar() {
+  const t = useT();
   return (
     <section className="relative border-y border-line/60 bg-bg-soft/60 py-12">
       <div className="container-x mb-6 flex items-center justify-between gap-6">
@@ -12,13 +14,13 @@ export function TrustBar() {
           as="p"
           className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3"
         >
-          Trusted across 34 countries —
+          {t.trust.label}
         </Reveal>
         <Reveal
           as="p"
           className="hidden font-mono text-[11px] uppercase tracking-[0.22em] text-ink-4 sm:block"
         >
-          ASTM E3 · ISO 17025 · GE-S400
+          {t.trust.certs}
         </Reveal>
       </div>
 
@@ -32,7 +34,7 @@ export function TrustBar() {
               {item.name}
             </span>
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-4">
-              / {item.sub}
+              / {t.trust.sub[item.subKey] ?? item.subKey}
             </span>
             <span className="ml-10 h-6 w-px bg-line" />
           </div>

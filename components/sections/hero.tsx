@@ -6,10 +6,12 @@ import { ArrowDown, ArrowUpRight, Sparkles } from "lucide-react";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { Magnetic } from "@/components/ui/magnetic";
 import { Reveal, WordReveal } from "@/components/ui/reveal";
+import { useT } from "@/components/i18n-provider";
 
 export function HeroSection() {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
+  const t = useT();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -34,8 +36,8 @@ export function HeroSection() {
         style={{ y: orbY, scale: orbScale, opacity }}
         className="pointer-events-none absolute -right-32 top-12 h-[520px] w-[520px] rounded-full"
       >
-        <div className="absolute inset-0 rounded-full bg-[radial-gradient(closest-side,rgba(47,102,168,0.45),rgba(47,102,168,0)_70%)]" />
-        <div className="absolute inset-6 rounded-full bg-[radial-gradient(closest-side,rgba(94,234,212,0.25),transparent_70%)]" />
+        <div className="absolute inset-0 rounded-full tint-blob-blue" />
+        <div className="absolute inset-6 rounded-full tint-blob-cyan-soft" />
         <div className="absolute inset-16 rounded-full border border-cyan-glow/15" />
         <div className="absolute inset-28 rounded-full border border-cyan-glow/20" />
         <div className="absolute inset-40 rounded-full border border-cyan-glow/30" />
@@ -48,18 +50,15 @@ export function HeroSection() {
               <span className="relative inline-flex h-1.5 w-1.5 items-center justify-center rounded-full bg-cyan-glow">
                 <span className="absolute inset-0 animate-[pulse-ring_2s_ease-out_infinite] rounded-full bg-cyan-glow/50" />
               </span>
-              Catalogue 2025 / Issue VI
+              {t.hero.eyebrow}
             </Reveal>
 
             <h1 className="text-balance text-[44px] leading-[1.02] tracking-[-0.03em] sm:text-6xl md:text-7xl lg:text-[88px]">
-              <WordReveal text="Metallography," className="block text-ink" />
+              <WordReveal text={t.hero.titleA} className="block text-ink" />
               <span className="relative block">
-                <WordReveal
-                  text="reduced to"
-                  className="text-ink"
-                />{" "}
+                <WordReveal text={t.hero.titleB} className="text-ink" />{" "}
                 <span className="font-display italic text-cyan-glow">
-                  <WordReveal text="one micron." delay={0.2} />
+                  <WordReveal text={t.hero.titleAccent} delay={0.2} />
                 </span>
               </span>
             </h1>
@@ -69,10 +68,7 @@ export function HeroSection() {
               className="mt-7 max-w-xl text-base leading-[1.65] text-ink-2 md:text-lg"
               as="p"
             >
-              METALAB designs and manufactures cutting, mounting, grinding,
-              polishing, etching and microscopy instruments for metallurgical
-              laboratories. Every machine is calibrated against ISO and ASTM
-              references — so what you see at 1000× is the truth.
+              {t.hero.subhead}
             </Reveal>
 
             <Reveal
@@ -82,9 +78,9 @@ export function HeroSection() {
               <Magnetic>
                 <a
                   href="#products"
-                  className="group inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-medium text-bg transition-shadow hover:shadow-[0_18px_60px_-12px_rgba(244,246,251,0.45)]"
+                  className="group inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-medium text-bg transition-shadow hover:shadow-[0_18px_60px_-12px_color-mix(in_oklab,var(--ink)_45%,transparent)]"
                 >
-                  Browse catalogue
+                  {t.hero.browse}
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </a>
               </Magnetic>
@@ -94,7 +90,7 @@ export function HeroSection() {
                   className="group inline-flex items-center gap-2 rounded-full border border-line bg-surface/40 px-5 py-3 text-sm text-ink transition-colors hover:border-cyan-glow/50 hover:bg-surface"
                 >
                   <Sparkles className="h-4 w-4 text-cyan-glow" />
-                  Talk to an application engineer
+                  {t.hero.talk}
                 </a>
               </Magnetic>
             </Reveal>
@@ -103,40 +99,72 @@ export function HeroSection() {
               delay={0.8}
               className="mt-12 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3"
             >
-              <ArrowDown className="h-3.5 w-3.5 text-cyan-glow" />
-              Scroll for sample preparation pipeline
+              <ArrowDown className="h-3.5 w-3.5" />
+              {t.hero.scroll}
             </Reveal>
           </div>
 
           <div className="relative col-span-12 lg:col-span-4">
             <motion.div
               style={{ y: sampleY }}
-              className="relative ml-auto aspect-square w-full max-w-[420px] overflow-hidden rounded-2xl border border-line bg-surface/40 backdrop-blur-sm"
+              className="relative ml-auto aspect-square w-full max-w-md overflow-hidden rounded-2xl border border-line bg-bg-raised/70 p-3 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.25)]"
             >
-              <MicrostructurePreview />
-              <SampleHUD />
+              <div className="relative h-full w-full overflow-hidden rounded-xl">
+                <SampleSVG />
+                <div className="absolute left-3 top-3 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
+                  {t.hero.sample}
+                </div>
+                <div className="absolute right-3 top-3 font-mono text-[10px] uppercase tracking-[0.22em] text-cyan-glow">
+                  {t.hero.sampleMag}
+                </div>
+                <div className="absolute left-3 bottom-3 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-4">
+                  10 mm
+                </div>
+                <div className="absolute right-3 bottom-3 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
+                  {t.hero.grain}
+                  <br />
+                  <span className="text-ink">{t.hero.grainValue}</span>
+                </div>
+              </div>
             </motion.div>
 
             <motion.div
               style={{ y: dataY }}
-              className="absolute -bottom-10 -left-4 hidden w-[260px] rounded-xl border border-line bg-bg-raised/90 p-4 shadow-2xl backdrop-blur-md sm:block lg:-left-12"
+              className="absolute -bottom-12 -left-12 hidden w-56 rounded-xl border border-line bg-bg-raised/85 p-4 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.25)] backdrop-blur sm:block"
             >
-              <DataCard />
+              <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
+                {t.hero.live}
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-glow" />
+              </div>
+              <div className="mt-2 text-[11px] text-ink-3">
+                {t.hero.surfaceRa}
+              </div>
+              <div className="flex items-baseline gap-1.5">
+                <div className="font-display text-4xl text-ink">0.02</div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-4">
+                  {t.hero.mm}
+                </div>
+              </div>
+              <BarSpark />
             </motion.div>
           </div>
         </div>
 
-        <div className="mt-16 flex flex-wrap items-end justify-between gap-6 border-t border-line/60 pt-6">
-          <div className="flex items-baseline gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
-            <span>EST. 2014</span>
-            <span className="text-ink-4">/</span>
-            <span>ISO 17025 Calibrated</span>
-            <span className="text-ink-4">/</span>
-            <span>34 Countries</span>
+        <div className="mt-20 grid grid-cols-12 items-end gap-6 border-t border-line/60 pt-6 md:mt-28">
+          <div className="col-span-12 md:col-span-8">
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-2 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
+              <span>{t.hero.est}</span>
+              <span className="hidden h-3 w-px bg-line md:inline" />
+              <span>{t.hero.iso}</span>
+              <span className="hidden h-3 w-px bg-line md:inline" />
+              <span>{t.hero.countries}</span>
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-3xl font-display italic text-ink">A — C</span>
-            <span className="text-xs text-ink-3">Series of six instruments</span>
+          <div className="col-span-12 flex items-center justify-start gap-3 md:col-span-4 md:justify-end">
+            <span className="font-display italic text-ink-2">A — C</span>
+            <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
+              {t.hero.seriesTag}
+            </span>
           </div>
         </div>
       </div>
@@ -144,7 +172,7 @@ export function HeroSection() {
   );
 }
 
-function MicrostructurePreview() {
+function SampleSVG() {
   return (
     <svg
       viewBox="0 0 400 400"
@@ -152,132 +180,55 @@ function MicrostructurePreview() {
       aria-hidden
     >
       <defs>
-        <radialGradient id="vignette" cx="50%" cy="50%" r="60%">
-          <stop offset="60%" stopColor="rgba(0,0,0,0)" />
-          <stop offset="100%" stopColor="rgba(0,0,0,0.55)" />
+        <radialGradient id="bg" cx="0.5" cy="0.4" r="0.7">
+          <stop offset="0" stopColor="var(--steel-300)" stopOpacity="0.25" />
+          <stop offset="1" stopColor="var(--bg-raised)" />
         </radialGradient>
-        <linearGradient id="gradFill" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#1c2330" />
-          <stop offset="1" stopColor="#0c1b2e" />
-        </linearGradient>
-        <pattern
-          id="hatch"
-          width="6"
-          height="6"
-          patternTransform="rotate(45)"
-          patternUnits="userSpaceOnUse"
-        >
-          <line x1="0" y1="0" x2="0" y2="6" stroke="#5eead4" strokeWidth="0.6" opacity="0.35" />
-        </pattern>
       </defs>
-
-      <rect width="400" height="400" fill="url(#gradFill)" />
-
-      {/* Voronoi-like grain boundaries */}
-      <g stroke="#5eead4" strokeWidth="0.7" fill="none" opacity="0.5">
-        <path d="M40 60 L120 30 L200 75 L260 35 L350 80" />
-        <path d="M30 130 L100 110 L160 160 L230 130 L310 165 L380 130" />
-        <path d="M55 220 L130 210 L210 250 L290 215 L370 230" />
-        <path d="M40 310 L120 290 L200 330 L280 290 L370 320" />
-        <path d="M20 380 L110 365 L210 390 L300 370 L390 395" />
-
-        <path d="M120 30 L100 110 L130 210 L120 290 L110 365" />
-        <path d="M200 75 L160 160 L210 250 L200 330 L210 390" />
-        <path d="M260 35 L230 130 L290 215 L280 290 L300 370" />
-        <path d="M350 80 L310 165 L370 230 L370 320 L390 395" />
+      <rect width="400" height="400" fill="url(#bg)" />
+      {/* Polygonal grain boundaries */}
+      <g stroke="var(--cyan-glow)" strokeOpacity="0.55" fill="none" strokeWidth="0.8">
+        <path d="M40 60 L130 90 L120 180 L60 220 Z" />
+        <path d="M130 90 L240 70 L260 160 L120 180 Z" />
+        <path d="M240 70 L350 110 L330 200 L260 160 Z" />
+        <path d="M120 180 L260 160 L280 280 L150 290 Z" />
+        <path d="M260 160 L330 200 L350 320 L280 280 Z" />
+        <path d="M60 220 L120 180 L150 290 L80 340 Z" />
+        <path d="M150 290 L280 280 L260 360 L160 370 Z" />
+        <path d="M280 280 L350 320 L330 380 L260 360 Z" />
       </g>
-
-      {/* Pearlite / cementite hatches in random grains */}
-      <polygon
-        points="120,30 200,75 160,160 100,110"
-        fill="url(#hatch)"
-        opacity="0.55"
-      />
-      <polygon
-        points="210,250 290,215 280,290 200,330"
-        fill="url(#hatch)"
-        opacity="0.4"
-      />
-      <polygon
-        points="40,310 120,290 130,210 55,220"
-        fill="rgba(94,234,212,0.06)"
-      />
-
-      {/* Inclusions */}
-      <g fill="#fbbf24" opacity="0.85">
-        <circle cx="240" cy="120" r="3" />
-        <circle cx="180" cy="210" r="2" />
-        <circle cx="320" cy="260" r="2.5" />
-        <circle cx="90" cy="270" r="1.6" />
+      <g fill="var(--amber-glow)" fillOpacity="0.65">
+        <circle cx="170" cy="120" r="2.5" />
+        <circle cx="220" cy="240" r="2.5" />
+        <circle cx="100" cy="270" r="2.5" />
+        <circle cx="310" cy="280" r="2.5" />
       </g>
-
-      <rect width="400" height="400" fill="url(#vignette)" />
+      <g stroke="var(--cyan-glow)" strokeWidth="0.6">
+        <line x1="200" y1="170" x2="200" y2="230" />
+        <line x1="170" y1="200" x2="230" y2="200" />
+        <circle cx="200" cy="200" r="20" fill="none" />
+      </g>
+      <g stroke="var(--cyan-glow)" strokeOpacity="0.5" strokeWidth="0.6">
+        <line x1="20" y1="200" x2="40" y2="200" />
+        <text x="22" y="195" fontSize="8" fill="var(--cyan-glow)">
+          Y
+        </text>
+      </g>
     </svg>
   );
 }
 
-function SampleHUD() {
+function BarSpark() {
+  const data = [3, 5, 8, 6, 9, 7, 11, 10, 12, 8, 6, 5];
   return (
-    <div className="absolute inset-0 p-4 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-2">
-      <div className="flex items-start justify-between">
-        <span>Sample 247-A</span>
-        <span className="text-cyan-glow">500× DIC</span>
-      </div>
-      <div className="absolute left-4 top-1/2 -translate-y-1/2">
-        <div className="h-12 w-px bg-ink-3/50" />
-        <div className="mt-1 text-ink-3">Y</div>
-      </div>
-      <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
-        <div className="space-y-1">
-          <div className="h-px w-16 bg-ink-3/60" />
-          <div className="text-ink-3">10 µm</div>
-        </div>
-        <div className="text-right">
-          <div className="text-ink-3">Grain G</div>
-          <div className="text-ink">8.7 ASTM</div>
-        </div>
-      </div>
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2">
-        <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-cyan-glow/70" />
-        <div className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-cyan-glow/70" />
-        <div className="absolute inset-0 rounded-full border border-cyan-glow/60" />
-      </div>
-    </div>
-  );
-}
-
-function DataCard() {
-  return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-[0.2em] text-ink-3">
-        <span>Live · Polishing</span>
-        <span className="inline-flex h-1.5 w-1.5 rounded-full bg-cyan-glow" />
-      </div>
-      <div className="flex items-end justify-between">
-        <div>
-          <div className="text-xs text-ink-3">Surface Ra</div>
-          <div className="font-display text-3xl text-ink">0.02</div>
-        </div>
-        <div className="text-right text-[10px] font-mono uppercase tracking-[0.2em] text-cyan-glow">
-          µm
-        </div>
-      </div>
-      <div className="grid grid-cols-12 items-end gap-[3px] h-12">
-        {Array.from({ length: 28 }).map((_, i) => {
-          const h = 20 + Math.sin(i * 0.6) * 18 + Math.sin(i * 1.3) * 10 + 24;
-          return (
-            <div
-              key={i}
-              className="w-full rounded-sm bg-cyan-glow/60 col-span-1"
-              style={{ height: `${Math.min(46, Math.max(8, h))}px` }}
-            />
-          );
-        })}
-      </div>
-      <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-[0.2em] text-ink-3">
-        <span>00:00</span>
-        <span>04:32</span>
-      </div>
+    <div className="mt-3 flex h-12 items-end gap-1">
+      {data.map((v, i) => (
+        <span
+          key={i}
+          className="flex-1 rounded-sm bg-cyan-glow/70"
+          style={{ height: `${(v / 14) * 100}%` }}
+        />
+      ))}
     </div>
   );
 }

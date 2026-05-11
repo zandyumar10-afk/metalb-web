@@ -3,25 +3,19 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
+import { useT } from "@/components/i18n-provider";
 
-const columns = [
+const columns: { titleKey: "instruments" | "studio" | "resources"; links: string[] }[] = [
   {
-    title: "Instruments",
-    links: [
-      "Cutting",
-      "Mounting",
-      "Polishing",
-      "Etching",
-      "Microscopy",
-      "Hardness",
-    ],
+    titleKey: "instruments",
+    links: ["Cutting", "Mounting", "Polishing", "Etching", "Microscopy", "Hardness"],
   },
   {
-    title: "Studio",
+    titleKey: "studio",
     links: ["About", "Engineering team", "Calibration lab", "Careers"],
   },
   {
-    title: "Resources",
+    titleKey: "resources",
     links: ["Catalogue PDF", "Recipes", "Service manuals", "Publications"],
   },
 ];
@@ -29,6 +23,7 @@ const columns = [
 export function FooterSection() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
+  const t = useT();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end end"],
@@ -41,7 +36,7 @@ export function FooterSection() {
       <motion.div
         style={{ y, opacity }}
         aria-hidden
-        className="pointer-events-none absolute -bottom-40 left-1/2 h-[460px] w-[1200px] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(closest-side,rgba(47,102,168,0.4),transparent_70%)]"
+        className="pointer-events-none absolute -bottom-40 left-1/2 h-[460px] w-[1200px] -translate-x-1/2 rounded-[50%] tint-blob-blue"
       />
 
       <div className="container-x relative grid grid-cols-12 gap-8 pt-20 pb-8 md:gap-10 md:pt-24">
@@ -62,24 +57,21 @@ export function FooterSection() {
             </span>
             <span className="text-ink">METALAB</span>
           </div>
-          <p className="mt-6 max-w-sm text-pretty text-ink-2">
-            Precision metallography instruments — engineered, calibrated and
-            shipped from a single workshop.
-          </p>
+          <p className="mt-6 max-w-sm text-pretty text-ink-2">{t.footer.blurb}</p>
           <a
             href="#cta"
             className="mt-8 inline-flex items-center gap-1.5 rounded-full border border-line bg-surface/60 px-4 py-2 text-sm text-ink transition-all hover:border-cyan-glow/40 hover:bg-surface"
           >
-            Start a project
+            {t.footer.start}
             <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>
 
         <div className="col-span-12 grid grid-cols-2 gap-6 md:col-span-7 md:grid-cols-3">
           {columns.map((col) => (
-            <div key={col.title}>
+            <div key={col.titleKey}>
               <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
-                {col.title}
+                {t.footer.columns[col.titleKey]}
               </div>
               <ul className="mt-4 space-y-2 text-sm text-ink-2">
                 {col.links.map((link) => (
@@ -88,7 +80,7 @@ export function FooterSection() {
                       href="#"
                       className="inline-flex items-center gap-1 transition-colors hover:text-ink"
                     >
-                      {link}
+                      {t.footer.links[link] ?? link}
                     </a>
                   </li>
                 ))}
@@ -106,7 +98,7 @@ export function FooterSection() {
         <div className="col-span-12 mt-16 flex flex-col items-start justify-between gap-3 border-t border-line/60 pt-6 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3 sm:flex-row sm:items-center">
           <span>© {new Date().getFullYear()} METALAB Instruments</span>
           <span>Bandung · Jakarta · Stuttgart</span>
-          <span>Made for metallurgists</span>
+          <span>{t.footer.tagline}</span>
         </div>
       </div>
     </footer>

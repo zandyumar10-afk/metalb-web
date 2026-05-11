@@ -7,7 +7,7 @@ type RevealProps = {
   children: ReactNode;
   delay?: number;
   className?: string;
-  as?: "div" | "span" | "h2" | "h3" | "p" | "li";
+  as?: "div" | "span" | "h1" | "h2" | "h3" | "p" | "li";
   y?: number;
   amount?: number;
   once?: boolean;
@@ -163,6 +163,7 @@ export function WordReveal({
 
   return (
     <motion.span
+      key={text}
       className={className}
       variants={container}
       initial="hidden"
