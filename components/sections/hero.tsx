@@ -6,6 +6,7 @@ import { ArrowDown, ArrowUpRight, Sparkles } from "lucide-react";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { Magnetic } from "@/components/ui/magnetic";
 import { Reveal, WordReveal } from "@/components/ui/reveal";
+import { PhotoWall, PhotoLane, photoLaneAll } from "@/components/ui/photo-wall";
 import { useT } from "@/components/i18n-provider";
 
 export function HeroSection() {
@@ -20,8 +21,10 @@ export function HeroSection() {
   const orbY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 140]);
   const orbScale = useTransform(scrollYProgress, [0, 1], [1, reduce ? 1 : 1.15]);
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0.2]);
-  const sampleY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -80]);
+  const wallY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -60]);
+  const wallScale = useTransform(scrollYProgress, [0, 1], [1, reduce ? 1 : 1.06]);
   const dataY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -120]);
+  const laneY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -40]);
 
   return (
     <section
@@ -44,8 +47,8 @@ export function HeroSection() {
       </motion.div>
 
       <div className="container-x relative">
-        <div className="grid grid-cols-12 gap-6">
-          <div className="col-span-12 lg:col-span-8">
+        <div className="grid grid-cols-12 gap-6 lg:gap-8">
+          <div className="col-span-12 lg:col-span-7">
             <Reveal className="mb-7 inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3 py-1.5 text-[11px] uppercase tracking-[0.2em] text-ink-3">
               <span className="relative inline-flex h-1.5 w-1.5 items-center justify-center rounded-full bg-cyan-glow">
                 <span className="absolute inset-0 animate-[pulse-ring_2s_ease-out_infinite] rounded-full bg-cyan-glow/50" />
@@ -104,33 +107,17 @@ export function HeroSection() {
             </Reveal>
           </div>
 
-          <div className="relative col-span-12 lg:col-span-4">
+          <div className="relative col-span-12 lg:col-span-5">
             <motion.div
-              style={{ y: sampleY }}
-              className="relative ml-auto aspect-square w-full max-w-md overflow-hidden rounded-2xl border border-line bg-bg-raised/70 p-3 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.25)]"
+              style={{ y: wallY, scale: wallScale }}
+              className="relative ml-auto w-full"
             >
-              <div className="relative h-full w-full overflow-hidden rounded-xl">
-                <SampleSVG />
-                <div className="absolute left-3 top-3 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
-                  {t.hero.sample}
-                </div>
-                <div className="absolute right-3 top-3 font-mono text-[10px] uppercase tracking-[0.22em] text-cyan-glow">
-                  {t.hero.sampleMag}
-                </div>
-                <div className="absolute left-3 bottom-3 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-4">
-                  10 mm
-                </div>
-                <div className="absolute right-3 bottom-3 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
-                  {t.hero.grain}
-                  <br />
-                  <span className="text-ink">{t.hero.grainValue}</span>
-                </div>
-              </div>
+              <PhotoWall />
             </motion.div>
 
             <motion.div
               style={{ y: dataY }}
-              className="absolute -bottom-12 -left-12 hidden w-56 rounded-xl border border-line bg-bg-raised/85 p-4 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.25)] backdrop-blur sm:block"
+              className="absolute -bottom-6 -left-6 z-10 hidden w-56 rounded-xl border border-line bg-bg-raised/90 p-4 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.25)] backdrop-blur sm:block"
             >
               <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-ink-3">
                 {t.hero.live}
@@ -150,7 +137,14 @@ export function HeroSection() {
           </div>
         </div>
 
-        <div className="mt-20 grid grid-cols-12 items-end gap-6 border-t border-line/60 pt-6 md:mt-28">
+        <motion.div
+          style={{ y: laneY }}
+          className="mt-16 md:mt-24"
+        >
+          <PhotoLane tiles={photoLaneAll} direction="left" duration={55} />
+        </motion.div>
+
+        <div className="mt-16 grid grid-cols-12 items-end gap-6 border-t border-line/60 pt-6 md:mt-20">
           <div className="col-span-12 md:col-span-8">
             <div className="flex flex-wrap items-center gap-x-8 gap-y-2 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-3">
               <span>{t.hero.est}</span>
@@ -169,52 +163,6 @@ export function HeroSection() {
         </div>
       </div>
     </section>
-  );
-}
-
-function SampleSVG() {
-  return (
-    <svg
-      viewBox="0 0 400 400"
-      className="absolute inset-0 h-full w-full"
-      aria-hidden
-    >
-      <defs>
-        <radialGradient id="bg" cx="0.5" cy="0.4" r="0.7">
-          <stop offset="0" stopColor="var(--steel-300)" stopOpacity="0.25" />
-          <stop offset="1" stopColor="var(--bg-raised)" />
-        </radialGradient>
-      </defs>
-      <rect width="400" height="400" fill="url(#bg)" />
-      {/* Polygonal grain boundaries */}
-      <g stroke="var(--cyan-glow)" strokeOpacity="0.55" fill="none" strokeWidth="0.8">
-        <path d="M40 60 L130 90 L120 180 L60 220 Z" />
-        <path d="M130 90 L240 70 L260 160 L120 180 Z" />
-        <path d="M240 70 L350 110 L330 200 L260 160 Z" />
-        <path d="M120 180 L260 160 L280 280 L150 290 Z" />
-        <path d="M260 160 L330 200 L350 320 L280 280 Z" />
-        <path d="M60 220 L120 180 L150 290 L80 340 Z" />
-        <path d="M150 290 L280 280 L260 360 L160 370 Z" />
-        <path d="M280 280 L350 320 L330 380 L260 360 Z" />
-      </g>
-      <g fill="var(--amber-glow)" fillOpacity="0.65">
-        <circle cx="170" cy="120" r="2.5" />
-        <circle cx="220" cy="240" r="2.5" />
-        <circle cx="100" cy="270" r="2.5" />
-        <circle cx="310" cy="280" r="2.5" />
-      </g>
-      <g stroke="var(--cyan-glow)" strokeWidth="0.6">
-        <line x1="200" y1="170" x2="200" y2="230" />
-        <line x1="170" y1="200" x2="230" y2="200" />
-        <circle cx="200" cy="200" r="20" fill="none" />
-      </g>
-      <g stroke="var(--cyan-glow)" strokeOpacity="0.5" strokeWidth="0.6">
-        <line x1="20" y1="200" x2="40" y2="200" />
-        <text x="22" y="195" fontSize="8" fill="var(--cyan-glow)">
-          Y
-        </text>
-      </g>
-    </svg>
   );
 }
 
