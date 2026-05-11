@@ -246,67 +246,53 @@ html.lenis body {
   background: radial-gradient(closest-side, var(--tint-glow-cyan-soft), transparent);
 }
 
-@keyframes marquee-x {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
+/* 3D photo wall — tasteskill-style drifting cluster in perspective space */
+.photo-wall-stage {
+  perspective: 2400px;
+  perspective-origin: 50% 35%;
 }
 
-@keyframes marquee-x-right {
-  from {
-    transform: translateX(-50%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes marquee-y-up {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-50%);
-  }
-}
-
-@keyframes marquee-y-down {
-  from {
-    transform: translateY(-50%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-.photo-wall-col-up {
-  animation: marquee-y-up var(--scroll-duration, 42s) linear infinite;
+.photo-wall-plane {
+  transform-style: preserve-3d;
+  transform: rotateX(2deg) rotateY(-6deg);
+  animation: photo-wall-breathe 24s ease-in-out infinite;
   will-change: transform;
 }
 
-.photo-wall-col-down {
-  animation: marquee-y-down var(--scroll-duration, 42s) linear infinite;
+@keyframes photo-wall-breathe {
+  0%, 100% {
+    transform: rotateX(2deg) rotateY(-6deg) translateZ(0);
+  }
+  50% {
+    transform: rotateX(1deg) rotateY(-3deg) translateZ(30px);
+  }
+}
+
+@keyframes photo-wall-drift {
+  from {
+    transform: translate3d(0, 0, 0) rotateZ(var(--photo-tilt, 0deg));
+  }
+  to {
+    transform: translate3d(0, -50%, 0) rotateZ(var(--photo-tilt, 0deg));
+  }
+}
+
+.photo-wall-track {
+  animation: photo-wall-drift var(--photo-duration, 42s) linear infinite;
+  animation-delay: var(--photo-delay, 0s);
+  transform: rotateZ(var(--photo-tilt, 0deg));
+  transform-origin: 50% 50%;
   will-change: transform;
 }
 
-.photo-lane-left {
-  animation: marquee-x var(--scroll-duration, 55s) linear infinite;
-  will-change: transform;
-}
-
-.photo-lane-right {
-  animation: marquee-x-right var(--scroll-duration, 55s) linear infinite;
-  will-change: transform;
+.photo-wall-card {
+  transform: translateZ(0);
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .photo-wall-col-up,
-  .photo-wall-col-down,
-  .photo-lane-left,
-  .photo-lane-right {
+  .photo-wall-plane,
+  .photo-wall-track {
     animation: none;
   }
 }

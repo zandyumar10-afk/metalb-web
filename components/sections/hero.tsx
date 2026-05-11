@@ -6,7 +6,7 @@ import { ArrowDown, ArrowUpRight, Sparkles } from "lucide-react";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { Magnetic } from "@/components/ui/magnetic";
 import { Reveal, WordReveal } from "@/components/ui/reveal";
-import { PhotoWall, PhotoLane, photoLaneAll } from "@/components/ui/photo-wall";
+import { PhotoWall } from "@/components/ui/photo-wall";
 import { useT } from "@/components/i18n-provider";
 
 export function HeroSection() {
@@ -24,7 +24,6 @@ export function HeroSection() {
   const wallY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -60]);
   const wallScale = useTransform(scrollYProgress, [0, 1], [1, reduce ? 1 : 1.06]);
   const dataY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -120]);
-  const laneY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -40]);
 
   return (
     <section
@@ -136,13 +135,6 @@ export function HeroSection() {
             </motion.div>
           </div>
         </div>
-
-        <motion.div
-          style={{ y: laneY }}
-          className="mt-16 md:mt-24"
-        >
-          <PhotoLane tiles={photoLaneAll} direction="left" durationSeconds={55} />
-        </motion.div>
 
         <div className="mt-16 grid grid-cols-12 items-end gap-6 border-t border-line/60 pt-6 md:mt-20">
           <div className="col-span-12 md:col-span-8">
