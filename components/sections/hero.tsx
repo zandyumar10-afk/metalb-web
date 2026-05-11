@@ -141,7 +141,7 @@ export function HeroSection() {
           style={{ y: laneY }}
           className="mt-16 md:mt-24"
         >
-          <PhotoLane tiles={photoLaneAll} direction="left" duration={55} />
+          <PhotoLane tiles={photoLaneAll} direction="left" durationSeconds={55} />
         </motion.div>
 
         <div className="mt-16 grid grid-cols-12 items-end gap-6 border-t border-line/60 pt-6 md:mt-20">

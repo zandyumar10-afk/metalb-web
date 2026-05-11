@@ -1,6 +1,3 @@
-"use client";
-
-import { motion, useReducedMotion } from "motion/react";
 import { MicrographTile, type TileSpec } from "@/components/ui/micrograph-tile";
 import { cn } from "@/lib/utils";
 
@@ -31,34 +28,29 @@ const colC: TileSpec[] = [
 type ScrollColumnProps = {
   tiles: TileSpec[];
   direction: "up" | "down";
-  duration: number;
+  durationSeconds: number;
   className?: string;
 };
 
-function ScrollColumn({ tiles, direction, duration, className }: ScrollColumnProps) {
-  const reduce = useReducedMotion();
+function ScrollColumn({
+  tiles,
+  direction,
+  durationSeconds,
+  className,
+}: ScrollColumnProps) {
   const loop = [...tiles, ...tiles];
 
   return (
     <div className={cn("relative overflow-hidden", className)}>
-      <motion.div
-        className="flex flex-col gap-4 will-change-transform"
-        initial={false}
-        animate={
-          reduce
-            ? undefined
-            : {
-                y: direction === "up" ? ["0%", "-50%"] : ["-50%", "0%"],
-              }
-        }
-        transition={
-          reduce
-            ? undefined
-            : {
-                duration,
-                ease: "linear",
-                repeat: Infinity,
-              }
+      <div
+        className={cn(
+          "flex flex-col gap-4",
+          direction === "up" ? "photo-wall-col-up" : "photo-wall-col-down",
+        )}
+        style={
+          {
+            "--scroll-duration": `${durationSeconds}s`,
+          } as React.CSSProperties
         }
       >
         {loop.map((spec, i) => (
@@ -68,7 +60,7 @@ function ScrollColumn({ tiles, direction, duration, className }: ScrollColumnPro
             className="aspect-[4/5] w-full shrink-0"
           />
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -82,9 +74,14 @@ export function PhotoWall({ className }: { className?: string }) {
       )}
     >
       <div className="grid h-full grid-cols-2 gap-4 md:grid-cols-3">
-        <ScrollColumn tiles={colA} direction="up" duration={42} />
-        <ScrollColumn tiles={colB} direction="down" duration={36} className="hidden md:block" />
-        <ScrollColumn tiles={colC} direction="up" duration={48} />
+        <ScrollColumn tiles={colA} direction="up" durationSeconds={42} />
+        <ScrollColumn
+          tiles={colB}
+          direction="down"
+          durationSeconds={36}
+          className="hidden md:block"
+        />
+        <ScrollColumn tiles={colC} direction="up" durationSeconds={48} />
       </div>
 
       {/* Top fade */}
@@ -104,39 +101,29 @@ export function PhotoWall({ className }: { className?: string }) {
 type HorizontalLaneProps = {
   tiles: TileSpec[];
   direction?: "left" | "right";
-  duration?: number;
+  durationSeconds?: number;
   className?: string;
 };
 
 export function PhotoLane({
   tiles,
   direction = "left",
-  duration = 50,
+  durationSeconds = 55,
   className,
 }: HorizontalLaneProps) {
-  const reduce = useReducedMotion();
   const loop = [...tiles, ...tiles];
 
   return (
     <div className={cn("relative overflow-hidden", className)}>
-      <motion.div
-        className="flex gap-4 will-change-transform"
-        initial={false}
-        animate={
-          reduce
-            ? undefined
-            : {
-                x: direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"],
-              }
-        }
-        transition={
-          reduce
-            ? undefined
-            : {
-                duration,
-                ease: "linear",
-                repeat: Infinity,
-              }
+      <div
+        className={cn(
+          "flex gap-4",
+          direction === "left" ? "photo-lane-left" : "photo-lane-right",
+        )}
+        style={
+          {
+            "--scroll-duration": `${durationSeconds}s`,
+          } as React.CSSProperties
         }
       >
         {loop.map((spec, i) => (
@@ -146,7 +133,7 @@ export function PhotoLane({
             className="aspect-[4/5] h-44 shrink-0 sm:h-56 md:h-64"
           />
         ))}
-      </motion.div>
+      </div>
 
       {/* Left & right fades */}
       <div
