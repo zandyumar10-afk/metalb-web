@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# METALAB — Metallography Lab Instruments
 
-## Getting Started
+Marketing site for a precision metallography lab equipment manufacturer.
+Editorial dark-industrial aesthetic, scroll-driven animations, and a six-instrument catalogue covering the entire specimen preparation pipeline.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router, static export)
+- **Tailwind CSS v4** (`@theme` tokens, custom utilities)
+- **Motion** (Framer Motion v12 — scroll-linked + viewport reveals)
+- **Lenis** (smooth scroll)
+- **Lucide React** (icons)
+- **Geist** + **Instrument Serif** typefaces
+
+## Sections
+
+1. Hero — editorial typography, animated microstructure preview, parallax data card
+2. Trust marquee — partner lab logos
+3. Product catalogue — six instruments with interactive detail panel
+4. Pipeline — five-step sticky-scroll process diagram
+5. Engineering specs — animated counters, certifications, operating envelope
+6. Studio / About — philosophy and pillars
+7. CTA — quotation request form
+8. Footer — sitemap and giant display-type wordmark
+
+## Local development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Production build
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build        # static export → ./out
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The build uses `next build --webpack` (instead of the default Turbopack) so the
+exported chunk filenames are deploy-platform safe.
 
-## Learn More
+`next.config.ts` sets `output: "export"` — the site is fully static and can be
+hosted on any CDN (Vercel, Netlify, Cloudflare Pages, S3, devinapps, etc).
+To deploy with a dynamic runtime (e.g. Vercel SSR), remove `output: "export"`.
 
-To learn more about Next.js, take a look at the following resources:
+## Content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+All product copy, process steps, and statistics live in `lib/data.ts`. Swap the
+placeholder brand name (`METALAB`) by searching across:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `app/layout.tsx` (metadata + html `lang`)
+- `components/nav-bar.tsx`
+- `components/sections/hero.tsx`
+- `components/sections/footer.tsx`
+- `lib/data.ts` (product names, partner names)
 
-## Deploy on Vercel
+## File layout
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+app/
+  layout.tsx        Root layout, fonts, Lenis + nav + glow + progress
+  page.tsx          Section composition
+  globals.css       Tailwind v4 theme + animations
+components/
+  lenis-provider    Smooth scroll
+  nav-bar           Sticky nav with scroll-state
+  sections/         Hero, trust, products, process, specs, about, cta, footer
+  ui/               Reveal, Stagger, WordReveal, Magnetic, Marquee, GridPattern,
+                    CursorGlow, ScrollProgress
+lib/
+  data.ts           Products, process steps, stats, trusted-by
+  utils.ts          cn() helper
+```
